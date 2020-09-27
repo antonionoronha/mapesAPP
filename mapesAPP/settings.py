@@ -76,12 +76,11 @@ WSGI_APPLICATION = 'mapesAPP.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'd1845devekh5n3',
         'USER': 'nndtwnrnhlntrf',
         'PASSWORD': '6c4a48445bf7f32931da420c0d8c3baeb4bb7526477f4f92bad923f9f87d81d8',
         'HOST': 'ec2-3-214-4-151.compute-1.amazonaws.com',
         'PORT': 5432,
-        'DATABASE': 'd1845devekh5n3',
     }
 }
 
