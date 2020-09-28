@@ -1,1 +1,1 @@
-web: gunicorn mapesAPP.wsgi --log-file -
+web: gunicorn mapesAPP.wsgi --log-file
