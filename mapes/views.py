@@ -14,21 +14,43 @@ def filter(request):
     data_inicio = request.GET.get('data_inicio')
     data_fim    = request.GET.get('data_fim')
 
-    if is_valid_queryparam(nome_medico):
-        qs = qs.filter(nome_medico__iexact=nome_medico)
-        qs = qs.annotate(num_exame=Count('exame'))
-        qs = qs.annotate(total=Sum('exame__valor_exame'))
-        for q in qs:
-            print(q.numero_guia,q.num_exame,q.total)
-
-    if is_valid_queryparam(data_inicio) and is_valid_queryparam(data_fim):
+    #Utilizando os três parâmetros como consulta
+    if is_valid_queryparam(nome_medico) and nome_medico != 'Escolha...' and is_valid_queryparam(data_inicio) and is_valid_queryparam(data_fim):
+        qs = qs.filter(nome_medico__iexact=nome_medico)        
         qs = qs.filter(data_consulta__range=[data_inicio,data_fim])
         qs = qs.annotate(num_exame=Count('exame'))
         qs = qs.annotate(total=Sum('exame__valor_exame'))
+    #Nome e data do início
+    elif is_valid_queryparam(nome_medico) and nome_medico != 'Escolha...' and is_valid_queryparam(data_inicio):
+        qs = qs.filter(nome_medico__iexact=nome_medico)
+        qs = qs.filter(data_consulta__gte=data_inicio)
+        qs = qs.annotate(num_exame=Count('exame'))
+        qs = qs.annotate(total=Sum('exame__valor_exame'))
+    #Nome e data fim
+    elif is_valid_queryparam(nome_medico) and nome_medico != 'Escolha...' and is_valid_queryparam(data_fim):
+        qs = qs.filter(nome_medico__iexact=nome_medico)
+        qs = qs.filter(data_consulta__lt=data_fim)
+        qs = qs.annotate(num_exame=Count('exame'))
+        qs = qs.annotate(total=Sum('exame__valor_exame'))
+        qs = qs.order_by('total')
+    #Apenas o nome
+    elif is_valid_queryparam(nome_medico) and nome_medico != 'Escolha...':
+        qs = qs.filter(nome_medico__iexact=nome_medico)
+        print(qs[0].cod_medico)
+        qs = qs.annotate(num_exame=Count('exame'))
+        qs = qs.annotate(total=Sum('exame__valor_exame'))
+        qs = qs.order_by('-total')
+    #Data início e data fim
+    elif is_valid_queryparam(data_inicio) and is_valid_queryparam(data_fim):
+        qs = qs.filter(data_consulta__range=[data_inicio,data_fim])
+        qs = qs.annotate(num_exame=Count('exame'))
+        qs = qs.annotate(total=Sum('exame__valor_exame'))
+    #Data início
     elif is_valid_queryparam(data_inicio):
         qs = qs.filter(data_consulta__gte=data_inicio)
         qs = qs.annotate(num_exame=Count('exame'))
         qs = qs.annotate(total=Sum('exame__valor_exame'))
+    #Data fim
     elif is_valid_queryparam(data_fim):
         qs = qs.filter(data_consulta__lt=data_fim)
         qs = qs.annotate(num_exame=Count('exame'))
@@ -37,8 +59,10 @@ def filter(request):
     return qs
 
 def consulta_list(request):
-   
-    if request is not None:
+    
+    print(request)
+
+    if request != '/':
         qs = filter(request)
     else:
         qs = []
