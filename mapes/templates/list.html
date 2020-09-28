@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+              <a class="nav-link" href="#">Mapes APP</a>
+          </li>
+        </ul>
+    </div>
+</nav>
+
+<main role="main" class="container">
+
+  
+  <h3>Filtrar relatórios</h3>
+  <form method="GET" action=".">
+    <div class="form-row">
+        <!--div class="form-group col-12">
+            <div class="input-group">
+                <input class="form-control py-2 border-right-0 border" type="search" name="title_contains" placeholder="Nome do médico..." />
+                <span class="input-group-append">
+                    <div class="input-group-text bg-transparent">
+                        <i class="fa fa-search"></i>
+                    </div>
+                </span>
+            </div>
+        </div-->
+        <div class="form-group col-md-4">
+            <label for="nome_medico">Médico</label>
+            <select id="nome_medico" class="form-control" name="nome_medico">
+              <option selected>Escolha...</option>
+              {% for medico in medicos %}
+              <option value="{{ medico.nome_medico }}">{{ medico.nome_medico }}</option>
+              {% endfor %}
+            </select>
+          </div>        
+    </div>
+   
+    <div class="form-row">
+      
+      <div class="form-group col-md-2 col-lg-4">
+        <label for="data_inicio">Data início</label>
+        <input type="date" class="form-control" id="data_inicio" name="data_inicio">
+      </div>
+      <div class="form-group col-md-2 col-lg-4">
+        <label for="data_fim">Data fim</label>
+        <input type="date" class="form-control" id="data_fim" name="data_fim">
+      </div>
+     
+    </div>
+    <!--div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="reviewed" name="reviewed">
+        <label class="form-check-label" for="reviewed">
+          Reviewed
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="notReviewed" name="notReviewed">
+        <label class="form-check-label" for="notReviewed">
+          Not reviewed
+        </label>
+      </div>
+    </div-->
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+  </form>
+
+  <hr />
+
+  {{context}}
+
+  <div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+              <th scope="col">Nome do médico</th>
+              <th scope="col">Número da guia</th>
+              <th scope="col">Data consulta</th>
+              <th scope="col">Valor consula</th>
+              <th scope="col">Gasto por consulta</th>
+              <th scope="col">Qtde exames</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for consulta in consultas  %}
+            <tr>
+              <th scope="row">{{ consulta.nome_medico }}</th>
+              <td> {{ consulta.numero_guia }}</td>
+              <td> {{ consulta.data_consulta }}</td>
+              <td>R$ {{ consulta.valor_consulta }}</td>
+              <td>R$ {{ consulta.total }} </td>
+              <td> {{ consulta.num_exame}} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    <!--ul>
+      {% for consulta in consultas %}
+        <li>
+          {{ consulta.numero_guia }}
+          <span>Código médico: {{ consulta.cod_medico }}</span>
+          <span>Médico: {{ consulta.nome_medico }}</span>
+          <span>Data Consulta: {{ consulta.data_consulta }}</span>
+          <span>Valor consulta: {{ consulta.valor_consulta }}</span>
+        </li>
+        <hr />
+      {% endfor %}
+    </ul-->
+    </table>
+  </div>
+
+</main>
+
+
+<script src="https://code.jquery.com/jquery.js"></script>
+{% endblock content %}
