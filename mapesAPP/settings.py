@@ -15,7 +15,9 @@ SECRET_KEY = '627@@s44=e!ttb^m)iw=j%cvt)ythdcw3b%rx_$zo0^1-k9!8q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'mapeapp.herokuapp.com'
+]
 
 
 # Application definition
