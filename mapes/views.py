@@ -38,7 +38,7 @@ def filter(request):
 
 def consulta_list(request):
    
-    if request:
+    if request is not None:
         qs = filter(request)
     else:
         qs = []
